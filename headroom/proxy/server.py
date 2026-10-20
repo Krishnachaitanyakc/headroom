@@ -4801,8 +4801,10 @@ def create_app(config: ProxyConfig | None = None) -> FastAPI:
                     "has_exact_tokens": token_accounting_status == "complete",
                     "token_accounting_status": token_accounting_status,
                     # Best-effort list-price estimate; null means unavailable,
-                    # never fabricated zero.
+                    # never fabricated zero. ``turn_id`` lets a consumer group
+                    # every priced row by turn, not only the raw log tail.
                     "cost_usd": request_cost_usd(proxy.cost_tracker, log),
+                    "turn_id": log.get("turn_id"),
                     "transforms_applied": log.get("transforms_applied", []),
                     "savings_breakdown": log.get("savings_breakdown", []),
                     "waste_signals": log.get("waste_signals"),
